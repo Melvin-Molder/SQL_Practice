@@ -3,7 +3,7 @@ CREATE TABLE Accounts_Table (
     InstitutionID INT CHECK (InstitutionID > 0 AND InstitutionID < 100000),
     AccountID INT CHECK (AccountID > 0 AND AccountID < 1000000000000),
     AccountTitle VARCHAR(255),
-    GroupCode VARCHAR(1),
+    GroupCode CHAR(1),
     GroupID INT,
     RegionCode INT,
     AccountCategory VARCHAR(14),
