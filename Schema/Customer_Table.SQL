@@ -1,5 +1,5 @@
 CREATE TABLE Customer_Table (
-    CustomerID INT PRIMARY KEY,
+    CustomerID INT IDENTITY(1,1) PRIMARY KEY,
     CustomerTitle VARCHAR(255),
     MailingAddress VARCHAR(255),
     EmailAddress VARCHAR(255),
