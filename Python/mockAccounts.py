@@ -3,51 +3,33 @@ import random
 
 fake = Faker()
 
+# Dictionary to track the count of each category
+category_count = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0}
+
 def generate_account():
-    bank = random.randint(1, 99999)
-    account = random.randint(1, 999999999999)
-    short_bank = random.randint(1, 99999)
-    bank_region = random.choice([1, 2, 3, 4, 9])
-    date_opened = fake.date_between(start_date='-30y', end_date='today')
+    id = random.randint(1, 10000)
+    region_code = random.choice([10, 20, 30, 40, 50])
+    category = random.choice(['A', 'B', 'C', 'D', 'E'])
+    type = random.choice(['Basic', 'Premium'])
+    open_date = fake.date_between(start_date='-10y', end_date='today')
+    
+    status = random.choice(['Active', 'Inactive'])
+    close_date = None
+    if status == 'Inactive':
+        close_date = fake.date_between(start_date=open_date, end_date='today')
 
-    # Set Bank_Fileset based on Bank_Region
-    if bank_region == 1:
-        bank_fileset = random.choice(['F', 'G', 'H', 'I', 'J'])
-    elif bank_region == 2:
-        bank_fileset = random.choice(['A', 'K'])
-    elif bank_region == 3:
-        bank_fileset = random.choice(['B', 'C', 'D'])
-    elif bank_region == 4:
-        bank_fileset = 'E'
-    elif bank_region == 9:
-        bank_fileset = 'L'
-
-    # Set Plan_Type from the specified options
-    plan_type = random.choice(['Full', 'Partial', 'Deposit', 'Full Pos Pay', 'Part Pos Pay'])
-
-    # Set Account_Type from the Plan_Type
-    if plan_type == 'Deposit':
-        account_type = 'D'
-    else:
-        account_type = 'C'
-
-    # Set Account_Status and potentially Closed_Date
-    account_status = random.choice(['O', 'C'])
-    closed_date = None
-    if account_status == 'C':
-        closed_date = fake.date_between(start_date=date_opened, end_date='today')
+    # Increment the category counter
+    category_count[category] += 1
 
     return {
-        'Bank': bank,
-        'Account': account,
-        'Bank_Fileset': bank_fileset,
-        'Short_Bank': short_bank,
-        'Bank_Region': bank_region,
-        'Account_Type': account_type,
-        'Plan_Type': plan_type,
-        'Date_Opened': date_opened,
-        'Account_Status': account_status,
-        'Closed_Date': closed_date
+        'ID': id,
+        'Region_Code': region_code,
+        'Category': category,
+        'Type': type,
+        'Open_Date': open_date,
+        'Status': status,
+        'Close_Date': close_date,
+        'Category_Counter': category_count[category]
     }
 
 # Generate 10 mock records for demonstration
