@@ -1,8 +1,10 @@
 CREATE TABLE AccountServices_Table (
-    Bank INT CHECK (Bank > 0 AND Bank < 100000),
-    Account INT CHECK (Account > 0 AND Account < 1000000000000),
-    Service_Type VARCHAR(255),
-    Start_Date DATE,
-    End_Date DATE,
-    PRIMARY KEY (Bank, Account, Start_Date)  
+    InstitutionID INT CHECK (InstitutionID > 0 AND InstitutionID < 100000),
+    AccountID INT CHECK (AccountID > 0 AND AccountID < 1000000000000),
+    ServiceType VARCHAR(255),
+    StartDate DATE,
+    StartTime TIME,
+    EndDate DATE,
+    PRIMARY KEY (InstitutionID, AccountID, StartDate, StartTime),
+    FOREIGN KEY (InstitutionID, AccountID) REFERENCES Accounts_Table(InstitutionID, AccountID)     
 );
