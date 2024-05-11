@@ -5,7 +5,7 @@ CREATE TABLE Transactions_Table (
     TransactionDate DATE,
     Amount MONEY,
     Status VARCHAR(1),
-    GroupCode VARCHAR(1),
+    GroupCode CHAR(1),
     PRIMARY KEY (GroupCode, GroupID, Serial, TransactionType),
     FOREIGN KEY (GroupCode, GroupID) REFERENCES GroupsID_Table(GroupCode, GroupID)     
 );

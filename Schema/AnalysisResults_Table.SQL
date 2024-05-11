@@ -4,7 +4,7 @@ CREATE TABLE AnalysisResults_Table (
     GeneratedDate DATE,
     InstitutionID INT,
     AccountID INT,
-    GroupCode VARCHAR(1),
+    GroupCode CHAR(1),
     GroupID INT,
     ResultData NVARCHAR(MAX),
     FOREIGN KEY (InstitutionID, AccountID) REFERENCES Accounts_Table(InstitutionID, AccountID),
