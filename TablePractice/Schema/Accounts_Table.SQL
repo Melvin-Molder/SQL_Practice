@@ -7,6 +7,7 @@ CREATE TABLE Accounts_Table (
     Account_Type VARCHAR(1),
     Plan_Type VARCHAR(255) NOT NULL,
     Date_Opened DATE,
+    Date_Closed DATE,
     Account_Status VARCHAR(1),
     PRIMARY KEY (Bank, Account)
 );
