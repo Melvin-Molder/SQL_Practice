@@ -66,12 +66,12 @@ try:
             for _ in range(num_accounts):
                 account_id = account_id + 1
                 date_opened = fake.date_this_decade()
-                fdate_opened = date_opened.strftime('%Y-%m-%d')
+                fdate_opened = date_opened.strftime('%Y-%m-%d') # Gotta do this stupidness for some reason...
                 account_status = random.choice(['O', 'C'])
                 if account_status == 'C':
                     additional_days = random.randint(1, 3650)
                     date_closed = date_opened + timedelta(days=additional_days)
-                    fdate_closed = str(date_closed)
+                    fdate_closed = str(date_closed) # I did not test if this was needed or not but it works... 
                 else:
                     fdate_closed = None
                 institution_id = institution_ids[group_code]
@@ -84,17 +84,10 @@ try:
             accountCount = accountCount + 1
                 
     conn.commit()
+    # Insert the accounts
     print("Accounts to add:", accountCount)
     print("Inserting Account data")
-    # Someone Save me its 2 in the morning and I could not think anymore this should be fixed....
-    i = 0
-    for ac in (accounts):
-        print("count is at:", i)
-        print(accounts[i])
-        cursor.execute('INSERT INTO Accounts_Table (CustomerID, InstitutionID, AccountID, AccountTitle, GroupCode, GroupID, RegionCode, AccountCategory, ServicePlan, DateOpened, DateClosed, AccountStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', accounts[i])      
-        print(accounts[i])
-        i = i + 1
-
+    cursor.executemany('INSERT INTO Accounts_Table (CustomerID, InstitutionID, AccountID, AccountTitle, GroupCode, GroupID, RegionCode, AccountCategory, ServicePlan, DateOpened, DateClosed, AccountStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', accounts)
     conn.commit()
     print("Account update successful")
 
@@ -102,7 +95,7 @@ try:
     transactions = []
     for account in accounts:
         for _ in range(5):  # Each account will get this many transactions added
-            serial = fake.random_int(min=1000, max=9999)
+            serial = fake.random_int(min=1000, max=9999) # random serial to keyed column, key is groupcode/id, serial, trans type. Small chance to be duplicate if using small range of random numbers with large amount of items
             transaction_type = random.choice(['IS', 'CN', 'ST'])  # Issue, Cancel, Stop
             transaction_date = fake.date_this_year().strftime('%Y-%m-%d')
             transactions.append((account[5], serial, transaction_type, transaction_date, fake.random_number(digits=4), 'N', account[4]))
