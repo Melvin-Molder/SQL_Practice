@@ -14,7 +14,6 @@ try:
         'UID=your_username;'
         'PWD=your_password')  
     cursor = conn.cursor()
-    # conn.commit()
 
     # Populate RegionCodes_Table
     regions = [(i, fake.country()) for i in range(1, 6)]
@@ -29,14 +28,13 @@ try:
 
     # Fetch GroupCodes with their corresponding GroupIDs for dynamic InstitutionID assignment
     cursor.execute('SELECT GroupCode, GroupID FROM GroupsID_Table')
-    # print("Institution IDs:", institution_ids)
     group_id_mapping = {row.GroupCode: (row.GroupID, institution_ids[row.GroupCode]) for row in cursor.fetchall()}    
-    print("Group ID Mapping:", group_id_mapping)
 
     # Populate Customer_Table
     customers = [(fake.name(), fake.address(), fake.email(), fake.phone_number()) for _ in range(10)]
     cursor.executemany('INSERT INTO Customer_Table (CustomerTitle, MailingAddress, EmailAddress, Phone) VALUES (?, ?, ?, ?)', customers)
     conn.commit()
+    print("Customers populated successfully.")
     cursor.execute('SELECT CustomerID FROM Customer_Table')
     customer_ids = [row[0] for row in cursor.fetchall()]
 
@@ -46,9 +44,8 @@ try:
     for group_code, description in groups:
         cursor.execute('SELECT GroupID FROM GroupsID_Table WHERE GroupCode = ?', (group_code,))
         result = cursor.fetchone()
-        # print("Group Code:", group_code)
-        account_id = 1000
-        group_id = 1
+        account_id = 1000  # Starting accounts off at 1000
+        group_id = 1  # Each account in a group is assigned a groupID starting with 1
         if result is None:
             # Insert GroupCode only if it does not exist
             cursor.execute('INSERT INTO GroupsID_Table (GroupCode, GroupID) VALUES (?, ?)', (group_code, group_id))
@@ -106,7 +103,7 @@ try:
 except Exception as e:
     print("An error occurred:", {e})
     if conn:
-        print("Rolling Back...")
+        print("Rolling Back to latest commit...")
         conn.rollback()
 
 finally:
